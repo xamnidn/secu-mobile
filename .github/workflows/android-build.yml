@@ -25,12 +25,14 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build release APK
-        run: ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m"
+        run: ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" --stacktrace
 
-      - name: Verify APK exists
+      - name: Show full output directory
         run: |
-          echo "Listing APK files..."
-          find app/build/outputs/apk -name "*.apk" -type f || echo "No APK found!"
+          echo "=== Full directory listing ==="
+          ls -R app/build/outputs/apk/release/ || echo "Folder tidak ditemukan!"
+          echo "=== Mencari semua file APK ==="
+          find . -name "*.apk" -type f
 
       - name: Upload release APK
         uses: actions/upload-artifact@v4
