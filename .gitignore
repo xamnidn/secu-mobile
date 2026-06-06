@@ -1,0 +1,18 @@
+# Gradle
+.gradle/
+build/
+
+# IDE
+*.iml
+.idea/
+
+# OS
+desktop.ini
+Thumbs.db
+
+# Log & dump
+build_log.txt
+*.hprof
+
+# Local properties
+local.properties
