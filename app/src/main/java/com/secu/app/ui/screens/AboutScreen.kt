@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,10 +19,10 @@ fun AboutScreen(onBack: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("About") },
+                title = { Text("About", fontWeight = FontWeight.Bold, fontSize = 14.sp) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 }
             )
@@ -39,7 +39,31 @@ fun AboutScreen(onBack: () -> Unit) {
             Spacer(Modifier.height(4.dp))
             Text("v1.3.0", fontSize = 12.sp)
             Spacer(Modifier.height(16.dp))
-            Text("Argon2id · MIT License · No storage", fontSize = 11.sp)
+            
+            Text("PARAMETER KRIPTOGRAFI", fontWeight = FontWeight.Bold, fontSize = 10.sp)
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = """
+                    Algoritma: Argon2id
+                    Time cost: 3 iterasi
+                    Memory: 65.536 KB (64 MB)
+                    Parallelism: 4 thread
+                    Hash length: 32 byte (256-bit)
+                    Ekspansi: SHA-256 + rejection sampling
+                    Profil: OWASP Interactive Login
+                    
+                    FORMAT SALT
+                    Portable: v1.3.0::google.com:1
+                    Device-bound: v1.3.0:<device_id>:google.com:1
+                    
+                    LISENSI MIT
+                    Perangkat lunak ini disediakan "sebagaimana adanya",
+                    tanpa jaminan apa pun.
+                """.trimIndent(),
+                fontSize = 10.sp,
+                fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                lineHeight = 16.sp
+            )
         }
     }
 }

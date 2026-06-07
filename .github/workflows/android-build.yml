@@ -1,17 +1,12 @@
-name: Build SECU Mobile Release
+name: Build SECU Debug
 
 on:
   push:
-    branches: [ main ]
-    tags:
-      - 'v*'
-  pull_request:
     branches: [ main ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
@@ -24,14 +19,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build release APK
-        run: ./gradlew assembleRelease --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m" --stacktrace
+      - name: Build debug APK
+        run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m"
 
-      - name: Show all APK files
-        run: find . -name "*.apk" -type f
-
-      - name: Upload release APK
+      - name: Upload debug APK
         uses: actions/upload-artifact@v4
         with:
-          name: app-release
-          path: "**/*.apk"
+          name: app-debug
+          path: app/build/outputs/apk/debug/*.apk

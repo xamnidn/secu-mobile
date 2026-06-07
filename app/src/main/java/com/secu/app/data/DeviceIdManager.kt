@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Base64
 import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
+import androidx.security.crypto.MasterKeys
 import java.security.SecureRandom
 
 /**
@@ -48,18 +48,15 @@ object DeviceIdManager {
     }
 
     /**
-     * Builds an [EncryptedSharedPreferences] instance with AES‑256‑GCM key
-     * and value encryption.
+     * Builds an [EncryptedSharedPreferences] instance using the master key
+     * from the Android Keystore (AES-256-GCM).
      */
     private fun getEncryptedPrefs(context: Context): SharedPreferences {
-        val masterKey = MasterKey.Builder(context)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
-
+        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
         return EncryptedSharedPreferences.create(
-            context,
             PREFS_FILE,
-            masterKey,
+            masterKeyAlias,
+            context,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
