@@ -7,6 +7,15 @@ android {
     namespace = "com.secu.app"
     compileSdk = 34
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("secu.keystore")
+            storePassword = "secu123"
+            keyAlias = "secu"
+            keyPassword = "secu123"
+        }
+    }
+
     defaultConfig {
         applicationId = "com.secu.app"
         minSdk = 26
@@ -22,6 +31,7 @@ android {
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             isShrinkResources = false
             proguardFiles(

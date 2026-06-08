@@ -84,12 +84,13 @@ fun MainScreen(
                         Image(
                             painter = painterResource(com.secu.app.R.mipmap.ic_launcher_adaptive_fore),
                             contentDescription = "SECU",
-                            modifier = Modifier.size(40.dp)
+                            modifier = Modifier.size(48.dp)
                         )
-                        Spacer(Modifier.width(10.dp))
-                        Text("secu.my.id", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = onSurface)
-                        Spacer(Modifier.width(8.dp))
-                        Text("Argon2id", fontSize = 10.sp, color = onSurfaceVariant)
+                        Spacer(Modifier.width(12.dp))
+                        Column {
+                            Text("secu.my.id", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = onSurface)
+                            Text("Argon2id", fontSize = 10.sp, color = onSurfaceVariant)
+                        }
                     }
                 },
                 actions = {
