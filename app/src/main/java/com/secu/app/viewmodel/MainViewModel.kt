@@ -89,7 +89,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 delay(1000)
                 _state.update { it.copy(clearSeconds = it.clearSeconds - 1) }
             }
-            ClipboardManager.overwrite(getApplication())
             _state.update { it.copy(password = "", clearSeconds = 0, entropyBits = 0.0, clearMasterTrigger = it.clearMasterTrigger + 1) }
         }
     }
