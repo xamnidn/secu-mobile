@@ -2,5 +2,6 @@
 <resources>
     <style name="Theme.SECU" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/ic_launcher_background</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@android:color/transparent</item>
     </style>
 </resources>
