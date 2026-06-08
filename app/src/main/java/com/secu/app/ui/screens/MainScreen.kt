@@ -8,13 +8,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -63,6 +63,13 @@ fun MainScreen(
     val sheetState = rememberModalBottomSheetState()
     val showErrorDialog = state.error != null
 
+    LaunchedEffect(state.clearMasterTrigger) {
+        if (state.clearMasterTrigger > 0) {
+            masterPassword = ""
+            copied = false
+        }
+    }
+
     val preview = remember(rawService) {
         val p = ServiceNormalizer.preview(rawService)
         if (p.isNotEmpty() && p != rawService.trim().lowercase()) "Preview: $p" else ""
@@ -73,16 +80,15 @@ fun MainScreen(
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Filled.Lock,
+                        Image(
+                            painter = painterResource(R.mipmap.ic_launcher),
                             contentDescription = "SECU",
-                            tint = primary,
-                            modifier = Modifier.size(22.dp)
+                            modifier = Modifier.size(24.dp)
                         )
-                        Spacer(Modifier.width(10.dp))
+                        Spacer(Modifier.width(8.dp))
                         Column {
-                            Text("secu.my.id", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = onSurface)
-                            Text("Argon2id deterministic password generator", fontSize = 9.sp, color = onSurfaceVariant)
+                            Text("secu.my.id", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = onSurface)
+                            Text("Argon2id deterministic password generator", fontSize = 8.sp, color = onSurfaceVariant)
                         }
                     }
                 },

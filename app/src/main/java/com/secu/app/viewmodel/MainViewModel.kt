@@ -26,6 +26,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val entropyBits: Double = 0.0,
         val isGenerating: Boolean = false,
         val clearSeconds: Int = 0,
+        val clearMasterTrigger: Int = 0,
         val error: String? = null
     )
 
@@ -89,12 +90,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 _state.update { it.copy(clearSeconds = it.clearSeconds - 1) }
             }
             ClipboardManager.overwrite(getApplication())
-            clearPassword()
+            _state.update { it.copy(password = "", clearSeconds = 0, entropyBits = 0.0, clearMasterTrigger = it.clearMasterTrigger + 1) }
         }
     }
 
     fun clearPassword() {
-        _state.update { it.copy(password = "", clearSeconds = 0, entropyBits = 0.0) }
+        _state.update { it.copy(password = "", clearSeconds = 0, entropyBits = 0.0, clearMasterTrigger = it.clearMasterTrigger + 1) }
     }
 
     fun clearError() {
