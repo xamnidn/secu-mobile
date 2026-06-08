@@ -22,21 +22,34 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Create local.properties
+        run: echo "sdk.dir=$ANDROID_HOME" > local.properties
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Show environment
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "JAVA_HOME=$JAVA_HOME"
+          cat local.properties
+
       - name: Build debug APK
-        run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m"
+        run: ./gradlew assembleDebug --stacktrace --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m"
 
-      - name: List APK output
-        run: find . -path "*/build/outputs/apk" -type d 2>/dev/null || echo "No apk output found"
+      - name: Find any APK produced
+        run: |
+          find / -name "*.apk" -type f 2>/dev/null || echo "NO APK FOUND ANYWHERE"
 
-      - name: Upload debug APK
+      - name: Show build directory structure
+        run: |
+          ls -la app/build/ 2>/dev/null || echo "NO build dir"
+          ls -la app/build/outputs/ 2>/dev/null || echo "NO outputs dir"
+          ls -la app/build/outputs/apk/ 2>/dev/null || echo "NO apk dir"
+
+      - name: Upload any APK found
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: app/build/outputs/**/*.apk
+          path: "**/*.apk"
