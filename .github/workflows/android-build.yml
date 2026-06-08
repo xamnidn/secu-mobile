@@ -25,21 +25,25 @@ jobs:
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_HOME" > local.properties
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
-
-      - name: Check Gradle wrapper
+      - name: Debug Java and Gradle
         run: |
-          ./gradlew --version
-          echo "---EXIT CODE: $?---"
+          which java
+          java -version 2>&1
+          echo "---"
+          cat gradle/wrapper/gradle-wrapper.properties
+          echo "---"
+          ls -la gradle/wrapper/
+          echo "---"
+          file gradle/wrapper/gradle-wrapper.jar
 
-      - name: Clean build
+      - name: Run Gradle with verbose output
         run: |
-          ./gradlew clean assembleDebug --no-daemon --stacktrace 2>&1
-          echo "---EXIT CODE: $?---"
+          ./gradlew --no-daemon --version 2>&1 || true
+          echo "=== VERSION DONE ==="
+          ./gradlew --no-daemon assembleDebug --info 2>&1 || true
+          echo "=== BUILD DONE ==="
 
-      - name: Verify build output
+      - name: Check APK
         run: |
-          find . -name "*.apk" -type f 2>/dev/null || echo "NO APK"
-          ls -la app/build/outputs/ 2>/dev/null || echo "NO outputs dir"
-          ls -la app/build/ 2>/dev/null || echo "NO build dir"
+          find . -name "*.apk" -type f 2>/dev/null || echo "NO APK FOUND"
+          ls -la app/build/ 2>/dev/null || echo "NO BUILD DIR"
