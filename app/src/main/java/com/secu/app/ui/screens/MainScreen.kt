@@ -303,15 +303,13 @@ fun AdvancedOptionsPanel(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(
                         onClick = { if (pwLength > 8) onLengthChange(pwLength - 1) },
-                        modifier = Modifier.size(40.dp),
-                        contentDescription = "Decrease length"
-                    ) { Icon(Icons.Default.Remove, contentDescription = null, tint = primary) }
+                        modifier = Modifier.size(40.dp)
+                    ) { Icon(Icons.Default.Remove, contentDescription = "Decrease length", tint = primary) }
                     Text(text = pwLength.toString(), fontSize = 11.sp, modifier = Modifier.width(32.dp), color = onSurface, textAlign = TextAlign.Center)
                     IconButton(
                         onClick = { if (pwLength < 128) onLengthChange(pwLength + 1) },
-                        modifier = Modifier.size(40.dp),
-                        contentDescription = "Increase length"
-                    ) { Icon(Icons.Default.Add, contentDescription = null, tint = primary) }
+                        modifier = Modifier.size(40.dp)
+                    ) { Icon(Icons.Default.Add, contentDescription = "Increase length", tint = primary) }
                 }
             }
             Spacer(Modifier.height(12.dp))
