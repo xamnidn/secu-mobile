@@ -163,9 +163,8 @@ fun MainScreen(
                     Spacer(Modifier.width(4.dp))
                     IconButton(
                         onClick = { if (rotationVersion > 1) rotationVersion-- },
-                        modifier = Modifier.size(40.dp),
-                        contentDescription = "Decrease version"
-                    ) { Icon(Icons.Default.Remove, contentDescription = null, tint = primary) }
+                        modifier = Modifier.size(40.dp)
+                    ) { Icon(Icons.Default.Remove, contentDescription = "Decrease version", tint = primary) }
                     Text(
                         text = rotationVersion.toString(),
                         fontSize = 11.sp,
@@ -175,9 +174,8 @@ fun MainScreen(
                     )
                     IconButton(
                         onClick = { if (rotationVersion < 999) rotationVersion++ },
-                        modifier = Modifier.size(40.dp),
-                        contentDescription = "Increase version"
-                    ) { Icon(Icons.Default.Add, contentDescription = null, tint = primary) }
+                        modifier = Modifier.size(40.dp)
+                    ) { Icon(Icons.Default.Add, contentDescription = "Increase version", tint = primary) }
                 }
             }
             Spacer(Modifier.height(6.dp))
