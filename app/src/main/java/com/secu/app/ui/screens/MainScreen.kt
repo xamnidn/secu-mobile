@@ -9,8 +9,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -146,12 +149,11 @@ fun MainScreen(
                 visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 trailingIcon = {
-                    TextButton(onClick = { showPassword = !showPassword }) {
-                        Text(
-                            text = if (showPassword) "Hide" else "Show",
-                            fontSize = 9.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = if (showPassword) primary else onSurfaceVariant
+                    IconButton(onClick = { showPassword = !showPassword }) {
+                        Icon(
+                            imageVector = if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                            contentDescription = if (showPassword) "Hide" else "Show",
+                            tint = if (showPassword) primary else onSurfaceVariant
                         )
                     }
                 },
@@ -219,10 +221,14 @@ fun MainScreen(
                 textStyle = typography.bodyMedium.copy(fontFamily = FontFamily.Monospace, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = primary),
                 trailingIcon = {
                     if (state.password.isNotEmpty()) {
-                        TextButton(
+                        IconButton(
                             onClick = { vm.copyToClipboard(); copied = true }
                         ) {
-                            Text(text = if (copied && state.clearSeconds >= 0) "Copied" else "Copy", fontSize = 9.sp, fontWeight = FontWeight.Bold, color = if (copied && state.clearSeconds >= 0) SuccessFg else primary)
+                            Icon(
+                                imageVector = Icons.Filled.ContentCopy,
+                                contentDescription = "Copy",
+                                tint = if (copied && state.clearSeconds >= 0) SuccessFg else primary
+                            )
                         }
                     }
                 },
