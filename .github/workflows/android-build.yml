@@ -28,28 +28,18 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Show environment
+      - name: Check Gradle wrapper
         run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "JAVA_HOME=$JAVA_HOME"
-          cat local.properties
+          ./gradlew --version
+          echo "---EXIT CODE: $?---"
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug --stacktrace --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m"
-
-      - name: Find any APK produced
+      - name: Clean build
         run: |
-          find / -name "*.apk" -type f 2>/dev/null || echo "NO APK FOUND ANYWHERE"
+          ./gradlew clean assembleDebug --no-daemon --stacktrace 2>&1
+          echo "---EXIT CODE: $?---"
 
-      - name: Show build directory structure
+      - name: Verify build output
         run: |
-          ls -la app/build/ 2>/dev/null || echo "NO build dir"
+          find . -name "*.apk" -type f 2>/dev/null || echo "NO APK"
           ls -la app/build/outputs/ 2>/dev/null || echo "NO outputs dir"
-          ls -la app/build/outputs/apk/ 2>/dev/null || echo "NO apk dir"
-
-      - name: Upload any APK found
-        if: success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-debug
-          path: "**/*.apk"
+          ls -la app/build/ 2>/dev/null || echo "NO build dir"
