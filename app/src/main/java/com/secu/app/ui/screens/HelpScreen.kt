@@ -8,7 +8,6 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,46 +31,73 @@ fun HelpScreen(onBack: () -> Unit) {
             modifier = Modifier
                 .padding(padding)
                 .padding(16.dp)
-                .verticalScroll(rememberScrollState())
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(
-                text = """
-                    SECU PASSWORD GENERATOR — PANDUAN PENGGUNAAN
-                    
-                    1. MASTER PASSWORD
-                       Masukkan satu password kuat yang Anda hafalkan.
-                       Password ini tidak disimpan di mana pun.
-                    
-                    2. SERVICE / WEBSITE
-                       Masukkan nama layanan (misal: google.com).
-                       Input akan dinormalisasi otomatis.
-                    
-                    3. VER (Rotation Version)
-                       Mulai dari 1. Naikkan jika layanan meminta Anda
-                       mengganti password tanpa mengubah Master Password.
-                    
-                    4. GENERATE PASSWORD
-                       Tekan tombol untuk menghasilkan password.
-                    
-                    5. COPY
-                       Salin password ke clipboard.
-                       Clipboard akan otomatis dihapus setelah 10 detik.
-                    
-                    ADVANCED OPTIONS
-                    - Character Set: pilih jenis karakter (A-Z, a-z, 0-9, simbol)
-                    - Password Length: 8–128 karakter
-                    - Bind to Device: kunci password ke perangkat ini
-                    
-                    KEAMANAN CLIPBOARD
-                    SECU mengosongkan clipboard setelah 10 detik.
-                    Nonaktifkan clipboard history di keyboard Anda.
-                    
-                    Password Anda adalah tanggung jawab Anda sendiri.
-                """.trimIndent(),
-                fontSize = 11.sp,
-                fontFamily = FontFamily.Monospace,
-                lineHeight = 18.sp
-            )
+            HelpSection("Password Generation") {
+                HelpBullet("Enter your master password (memorized only, never stored)")
+                HelpBullet("Enter service name (e.g., google.com) - auto-normalized")
+                HelpBullet("Set VER (rotation version) - start at 1, increment when a site requires a new password")
+                HelpBullet("Press Generate - deterministic output based solely on your inputs")
+                HelpBullet("Copy password to clipboard - auto-cleared after 10 seconds")
+            }
+
+            HelpSection("Advanced Options") {
+                HelpBullet("Character Set: select which character types to include (A-Z, a-z, 0-9, symbols)")
+                HelpBullet("Password Length: set between 8-128 characters")
+                HelpBullet("Bind to Device: lock password to this specific device using Android Keystore")
+            }
+
+            HelpSection("Clipboard Security") {
+                HelpBullet("Passwords are automatically removed from clipboard after 10 seconds")
+                HelpBullet("Clipboard is overwritten with random data after expiry")
+                HelpBullet("Disable clipboard history in your keyboard settings for added security")
+                HelpBullet("Other apps on the same device can read clipboard during the 10-second window")
+            }
+
+            HelpSection("Important Notes") {
+                HelpBullet("SECU is 100% offline - no network access required or permitted")
+                HelpBullet("No passwords are ever stored or transmitted")
+                HelpBullet("Losing your master password means permanent loss of all generated passwords")
+                HelpBullet("Cross-platform compatible: same inputs produce identical passwords on SECU desktop (Windows/Linux)")
+            }
         }
+    }
+}
+
+@Composable
+private fun HelpSection(title: String, content: @Composable ColumnScope.() -> Unit) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        elevation = CardDefaults.cardElevation(1.dp)
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Text(
+                text = title,
+                fontWeight = FontWeight.Bold,
+                fontSize = 11.sp,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Spacer(Modifier.height(6.dp))
+            content()
+        }
+    }
+}
+
+@Composable
+private fun HelpBullet(text: String) {
+    Row(modifier = Modifier.padding(vertical = 2.dp)) {
+        Text(
+            text = "\u2022  ",
+            fontSize = 10.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Text(
+            text = text,
+            fontSize = 10.sp,
+            color = MaterialTheme.colorScheme.onSurface,
+            lineHeight = 14.sp
+        )
     }
 }

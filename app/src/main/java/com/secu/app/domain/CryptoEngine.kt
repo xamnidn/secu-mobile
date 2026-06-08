@@ -13,6 +13,16 @@ object CryptoEngine {
     private const val PARALLELISM = 4
     private const val HASH_LENGTH = 32
 
+    fun buildCharset(upper: Boolean, lower: Boolean, numbers: Boolean, symbols: Boolean): String {
+        val sb = StringBuilder()
+        if (upper) sb.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+        if (lower) sb.append("abcdefghijklmnopqrstuvwxyz")
+        if (numbers) sb.append("0123456789")
+        if (symbols) sb.append("!@#\$%^&*()_+-=[]{}|;:,.<>?/~")
+        require(sb.isNotEmpty()) { "At least one character set must be selected" }
+        return sb.toString()
+    }
+
     fun derivePassword(masterPassword: String, salt: String, charset: String, length: Int): String {
         require(charset.isNotEmpty()) { "Charset must not be empty" }
 

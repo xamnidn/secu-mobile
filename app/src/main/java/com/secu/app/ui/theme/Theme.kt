@@ -9,6 +9,7 @@ private val LightColors = lightColorScheme(
     surface = BgCard,
     onBackground = TextMain,
     onSurface = TextMain,
+    onSurfaceVariant = TextMuted,
     primary = AccentBlue,
     onPrimary = Color.White,
     error = WarningColor,
@@ -19,7 +20,8 @@ private val DarkColors = darkColorScheme(
     surface = DarkBgCard,
     onBackground = DarkTextMain,
     onSurface = DarkTextMain,
-    primary = AccentBlue,
+    onSurfaceVariant = DarkTextMuted,
+    primary = DarkAccentBlue,
     onPrimary = Color.White,
     error = WarningColor,
 )

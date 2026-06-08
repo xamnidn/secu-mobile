@@ -9,6 +9,8 @@ import com.secu.app.data.ServiceNormalizer
 import com.secu.app.domain.CryptoEngine
 import com.secu.app.domain.SaltBuilder
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,11 +25,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         val password: String = "",
         val entropyBits: Double = 0.0,
         val isGenerating: Boolean = false,
+        val clearSeconds: Int = 0,
         val error: String? = null
     )
 
     private val _state = MutableStateFlow(MainUiState())
     val state: StateFlow<MainUiState> = _state.asStateFlow()
+
+    private var clearJob: Job? = null
 
     fun generate(
         masterPassword: String,
@@ -46,7 +51,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             try {
                 val result = withContext(Dispatchers.Default) {
                     val normalizedService = ServiceNormalizer.normalize(rawService)
-                    val charset = buildCharset(upper, lower, numbers, symbols)
+                    val charset = CryptoEngine.buildCharset(upper, lower, numbers, symbols)
 
                     val deviceComponent = if (deviceBind) {
                         DeviceIdManager.getDeviceId(getApplication())
@@ -63,9 +68,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     it.copy(
                         password = result.first,
                         entropyBits = result.second,
-                        isGenerating = false
+                        isGenerating = false,
+                        clearSeconds = 10
                     )
                 }
+                startClearTimer()
             } catch (e: Exception) {
                 _state.update {
                     it.copy(isGenerating = false, error = e.message ?: "Unknown error")
@@ -74,8 +81,20 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private fun startClearTimer() {
+        clearJob?.cancel()
+        clearJob = viewModelScope.launch {
+            while (_state.value.clearSeconds > 0) {
+                delay(1000)
+                _state.update { it.copy(clearSeconds = it.clearSeconds - 1) }
+            }
+            ClipboardManager.overwrite(getApplication())
+            clearPassword()
+        }
+    }
+
     fun clearPassword() {
-        _state.update { it.copy(password = "", error = null, entropyBits = 0.0) }
+        _state.update { it.copy(password = "", clearSeconds = 0, entropyBits = 0.0) }
     }
 
     fun clearError() {
@@ -85,15 +104,5 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun copyToClipboard() {
         val pwd = _state.value.password
         if (pwd.isNotEmpty()) ClipboardManager.copy(getApplication(), pwd)
-    }
-
-    private fun buildCharset(upper: Boolean, lower: Boolean, numbers: Boolean, symbols: Boolean): String {
-        val sb = StringBuilder()
-        if (upper) sb.append("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-        if (lower) sb.append("abcdefghijklmnopqrstuvwxyz")
-        if (numbers) sb.append("0123456789")
-        if (symbols) sb.append("!@#%^&*()_+-=[]{}|;:,.<>?/~")
-        require(sb.isNotEmpty()) { "At least one character set must be selected" }
-        return sb.toString()
     }
 }
