@@ -16,7 +16,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -89,8 +88,8 @@ fun MainScreen(
                         )
                         Spacer(Modifier.width(12.dp))
                         Column {
-                            Text("secu.my.id", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = onSurface, style = TextStyle(includeFontPadding = false))
-                            Text("Argon2id", fontSize = 10.sp, color = onSurfaceVariant, style = TextStyle(includeFontPadding = false))
+                            Text("secu.my.id", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = onSurface, lineHeight = 14.sp)
+                            Text("Argon2id", fontSize = 10.sp, color = onSurfaceVariant, lineHeight = 10.sp)
                         }
                     }
                 },
