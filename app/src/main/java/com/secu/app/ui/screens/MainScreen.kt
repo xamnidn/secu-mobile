@@ -1,6 +1,7 @@
 package com.secu.app.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,13 +9,13 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -80,17 +81,15 @@ fun MainScreen(
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Filled.Lock,
+                        Image(
+                            painter = painterResource(com.secu.app.R.mipmap.ic_launcher_adaptive_fore),
                             contentDescription = "SECU",
-                            tint = if (darkMode) DarkAccentBlue else AccentBlue,
-                            modifier = Modifier.size(20.dp)
+                            modifier = Modifier.size(28.dp)
                         )
+                        Spacer(Modifier.width(10.dp))
+                        Text("secu.my.id", fontWeight = FontWeight.Bold, fontSize = 16.sp, color = onSurface)
                         Spacer(Modifier.width(8.dp))
-                        Column {
-                            Text("secu.my.id", fontWeight = FontWeight.Bold, fontSize = 12.sp, color = onSurface)
-                            Text("Argon2id deterministic password generator", fontSize = 8.sp, color = onSurfaceVariant)
-                        }
+                        Text("Argon2id", fontSize = 10.sp, color = onSurfaceVariant)
                     }
                 },
                 actions = {
