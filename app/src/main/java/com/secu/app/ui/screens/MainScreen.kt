@@ -88,8 +88,8 @@ fun MainScreen(
                         )
                         Spacer(Modifier.width(12.dp))
                         Column {
-                            Text("secu.my.id", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = onSurface)
-                            Text("Argon2id", fontSize = 10.sp, color = onSurfaceVariant)
+                            Text("secu.my.id", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = onSurface, includeFontPadding = false)
+                            Text("Argon2id", fontSize = 10.sp, color = onSurfaceVariant, includeFontPadding = false)
                         }
                     }
                 },
