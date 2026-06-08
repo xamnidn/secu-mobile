@@ -25,25 +25,15 @@ jobs:
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_HOME" > local.properties
 
-      - name: Debug Java and Gradle
-        run: |
-          which java
-          java -version 2>&1
-          echo "---"
-          cat gradle/wrapper/gradle-wrapper.properties
-          echo "---"
-          ls -la gradle/wrapper/
-          echo "---"
-          file gradle/wrapper/gradle-wrapper.jar
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-      - name: Run Gradle with verbose output
-        run: |
-          ./gradlew --no-daemon --version 2>&1 || true
-          echo "=== VERSION DONE ==="
-          ./gradlew --no-daemon assembleDebug --info 2>&1 || true
-          echo "=== BUILD DONE ==="
+      - name: Build debug APK
+        run: ./gradlew assembleDebug --no-daemon -Dorg.gradle.jvmargs="-Xmx2048m"
 
-      - name: Check APK
-        run: |
-          find . -name "*.apk" -type f 2>/dev/null || echo "NO APK FOUND"
-          ls -la app/build/ 2>/dev/null || echo "NO BUILD DIR"
+      - name: Upload debug APK
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/**/*.apk
